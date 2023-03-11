@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Set {
+  id      Int       @id @default(autoincrement())
+  name    String
+  memo    String
+  flower  Flower[]
+  plume   Plume[]
+  sans    Sans[]
+  goblet  Goblet[]
+  circlet Circlet[]
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  flower      Flower[]
+  plume       Plume[]
+  sans        Sans[]
+  goblet      Goblet[]
+  circlet     Circlet[]
+
+  preset Preset[]
+}
+
+model Flower {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  set   Set @relation(fields: [setId], references: [id])
+  setId Int
+
+  rarity Int
+  rank   Int
+  main   String
+
+  // sub
+  atk      Int   @default(0)
+  atkPer   Float @default(0)
+  def      Int   @default(0)
+  defPer   Float @default(0)
+  critRate Float @default(0)
+  critDmg  Float @default(0)
+  eneChar  Float @default(0)
+  eneMas   Float @default(0)
+  hp       Int   @default(0)
+  hpPer    Float @default(0)
+
+  Preset Preset[]
+}
+
+model Plume {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  set   Set @relation(fields: [setId], references: [id])
+  setId Int
+
+  rarity Int
+  rank   Int
+  main   String
+
+  // sub
+  atk      Int      @default(0)
+  atkPer   Float    @default(0)
+  def      Int      @default(0)
+  defPer   Float    @default(0)
+  critRate Float    @default(0)
+  critDmg  Float    @default(0)
+  eneChar  Float    @default(0)
+  eneMas   Float    @default(0)
+  hp       Int      @default(0)
+  hpPer    Float    @default(0)
+  Preset   Preset[]
+}
+
+model Sans {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  set   Set @relation(fields: [setId], references: [id])
+  setId Int
+
+  rarity Int
+  rank   Int
+  main   String
+
+  // sub
+  atk      Int      @default(0)
+  atkPer   Float    @default(0)
+  def      Int      @default(0)
+  defPer   Float    @default(0)
+  critRate Float    @default(0)
+  critDmg  Float    @default(0)
+  eneChar  Float    @default(0)
+  eneMas   Float    @default(0)
+  hp       Int      @default(0)
+  hpPer    Float    @default(0)
+  Preset   Preset[]
+}
+
+model Goblet {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  set   Set @relation(fields: [setId], references: [id])
+  setId Int
+
+  rarity Int
+  rank   Int
+  main   String
+
+  // sub
+  atk      Int      @default(0)
+  atkPer   Float    @default(0)
+  def      Int      @default(0)
+  defPer   Float    @default(0)
+  critRate Float    @default(0)
+  critDmg  Float    @default(0)
+  eneChar  Float    @default(0)
+  eneMas   Float    @default(0)
+  hp       Int      @default(0)
+  hpPer    Float    @default(0)
+  Preset   Preset[]
+}
+
+model Circlet {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  set   Set @relation(fields: [setId], references: [id])
+  setId Int
+
+  rarity Int
+  rank   Int
+  main   String
+
+  // sub
+  atk      Int   @default(0)
+  atkPer   Float @default(0)
+  def      Int   @default(0)
+  defPer   Float @default(0)
+  critRate Float @default(0)
+  critDmg  Float @default(0)
+  eneChar  Float @default(0)
+  eneMas   Float @default(0)
+  hp       Int   @default(0)
+  hpPer    Float @default(0)
+
+  Preset Preset[]
+}
+
+model Preset {
+  id Int @id @default(autoincrement())
+
+  flower    Flower?  @relation(fields: [flowerId], references: [id])
+  flowerId  Int
+  plume     Plume?   @relation(fields: [plumeId], references: [id])
+  plumeId   Int
+  sans      Sans?    @relation(fields: [sansId], references: [id])
+  sansId    Int
+  goblet    Goblet?  @relation(fields: [gobletId], references: [id])
+  gobletId  Int
+  circlet   Circlet? @relation(fields: [circletId], references: [id])
+  circletId Int
+
+  title       String
+  description String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      Int
+  tag         Tag[]
+}
+
+model Tag {
+  id     Int      @id @default(autoincrement())
+  name   String
+  preset Preset[]
+  color  String
+}
